@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bj.mapper.EmployeesMapper">
+
+    <resultMap id="BaseResultMap" type="com.bj.pojo.Employees">
+            <id property="employeeId" column="employee_id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="VARCHAR"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+            <result property="position" column="position" jdbcType="VARCHAR"/>
+            <result property="contact" column="contact" jdbcType="VARCHAR"/>
+            <result property="hireDate" column="hire_date" jdbcType="DATE"/>
+            <result property="resignationDate" column="resignation_date" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        employee_id,name,gender,
+        age,position,contact,
+        hire_date,resignation_date
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from employees
+        where  employee_id = #{employeeId,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from employees
+        where  employee_id = #{employeeId,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="employee_id" keyProperty="employeeId" parameterType="com.bj.pojo.Employees" useGeneratedKeys="true">
+        insert into employees
+        ( employee_id,name,gender
+        ,age,position,contact
+        ,hire_date,resignation_date)
+        values (#{employeeId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{gender,jdbcType=VARCHAR}
+        ,#{age,jdbcType=INTEGER},#{position,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR}
+        ,#{hireDate,jdbcType=DATE},#{resignationDate,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" keyColumn="employee_id" keyProperty="employeeId" parameterType="com.bj.pojo.Employees" useGeneratedKeys="true">
+        insert into employees
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="employeeId != null">employee_id,</if>
+                <if test="name != null">name,</if>
+                <if test="gender != null">gender,</if>
+                <if test="age != null">age,</if>
+                <if test="position != null">position,</if>
+                <if test="contact != null">contact,</if>
+                <if test="hireDate != null">hire_date,</if>
+                <if test="resignationDate != null">resignation_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="employeeId != null">#{employeeId,jdbcType=INTEGER},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+                <if test="gender != null">#{gender,jdbcType=VARCHAR},</if>
+                <if test="age != null">#{age,jdbcType=INTEGER},</if>
+                <if test="position != null">#{position,jdbcType=VARCHAR},</if>
+                <if test="contact != null">#{contact,jdbcType=VARCHAR},</if>
+                <if test="hireDate != null">#{hireDate,jdbcType=DATE},</if>
+                <if test="resignationDate != null">#{resignationDate,jdbcType=DATE},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bj.pojo.Employees">
+        update employees
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="gender != null">
+                    gender = #{gender,jdbcType=VARCHAR},
+                </if>
+                <if test="age != null">
+                    age = #{age,jdbcType=INTEGER},
+                </if>
+                <if test="position != null">
+                    position = #{position,jdbcType=VARCHAR},
+                </if>
+                <if test="contact != null">
+                    contact = #{contact,jdbcType=VARCHAR},
+                </if>
+                <if test="hireDate != null">
+                    hire_date = #{hireDate,jdbcType=DATE},
+                </if>
+                <if test="resignationDate != null">
+                    resignation_date = #{resignationDate,jdbcType=DATE},
+                </if>
+        </set>
+        where   employee_id = #{employeeId,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.bj.pojo.Employees">
+        update employees
+        set 
+            name =  #{name,jdbcType=VARCHAR},
+            gender =  #{gender,jdbcType=VARCHAR},
+            age =  #{age,jdbcType=INTEGER},
+            position =  #{position,jdbcType=VARCHAR},
+            contact =  #{contact,jdbcType=VARCHAR},
+            hire_date =  #{hireDate,jdbcType=DATE},
+            resignation_date =  #{resignationDate,jdbcType=DATE}
+        where   employee_id = #{employeeId,jdbcType=INTEGER} 
+    </update>
+
+    <select id="selectAll" resultType="employees">
+        select * from employees;
+    </select>
+</mapper>
